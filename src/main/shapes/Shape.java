@@ -7,6 +7,16 @@ public class Shape {
 	private ArrayList<Point2D.Double> points = new ArrayList<>();
 	private Point2D.Double center;
 	
+	public static Shape getRegularPolygon(int sides, int radius, Point2D.Double center) {
+		double radiansPerSide = Math.PI*2 / (double) sides;
+		Point2D.Double[] points = new Point2D.Double[sides];
+		for(int i = 0; i<sides; i++) {
+			points[i] = new Point2D.Double(Math.cos(radiansPerSide*i)*radius + center.x, Math.sin(radiansPerSide*i)*radius + center.y);
+		}
+		return new Shape(points);
+	}
+	
+	
 	public Shape(Point2D.Double...pointsAsArray) {
 		double xValCenter = 0;
 		double yValCenter = 0;
@@ -44,6 +54,16 @@ public class Shape {
 		}
 		
 		return new Shape(rotatedPoints);
+	}
+	
+	public Shape moveCenterTo(Point2D.Double newCenter) {
+		Point2D.Double vectorForMove = new Point2D.Double(newCenter.x - center.x, newCenter.y - center.y);
+		Point2D.Double[] translated = new Point2D.Double[points.size()];
+		for(int i = 0; i<translated.length; i++) {
+			translated[i] = new Point2D.Double(points.get(i).x+vectorForMove.x, points.get(i).y+vectorForMove.y);
+		}
+		
+		return new Shape(translated);
 	}
 	
 	public int[] getXCoordinatesForShapeDraw() {

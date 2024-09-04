@@ -10,7 +10,7 @@ import main.shapes.Shape;
 public class ShapeTest {
 	Shape testSquareOriginCenter;
 	Shape testSquareAltCenter;
-
+	double acceptableFloatingPointErrorMargin = 0.0001;
 	@BeforeEach
 	public void setup() {
 		testSquareOriginCenter = new Shape(
@@ -32,28 +32,29 @@ public class ShapeTest {
 	@Test
 	public void getXCoordinatesForShapeDraw_returnCoords() {
 		int[] expectedCoords = {-1, 1, 1, -1};
-		int[] actualCoords = testSquareOriginCenter.getXCoordinatesForShapeDraw();
-		
-		assert(expectedCoords.length == actualCoords.length);
-		for(int i = 0; i<expectedCoords.length; i++) {
-			assert(expectedCoords[i] == actualCoords[i]);
-		}
+		checkExpectedPointCoordinatesAgainstActual(expectedCoords, testSquareOriginCenter.getXCoordinatesForShapeDraw());
 	}
 	
 	@Test
 	public void getYCoordinatesForShapeDraw_returnCoords() {
 		int[] expectedCoords = {-1, -1, 1, 1};
-		int[] actualCoords = testSquareOriginCenter.getYCoordinatesForShapeDraw();
-		
-		assert(expectedCoords.length == actualCoords.length);
-		for(int i = 0; i<expectedCoords.length; i++) {
-			assert(expectedCoords[i] == actualCoords[i]);
-		}
+		checkExpectedPointCoordinatesAgainstActual(expectedCoords, testSquareOriginCenter.getYCoordinatesForShapeDraw());
 	}
 	
 	@Test
 	public void getCenter_squareCenteredOnOrigin_returnCenter() {
-		assert(testSquareOriginCenter.getCenter().equals(new Point2D.Double(0,0)));
+		checkCenterPositionCorrect(new Point2D.Double(0, 0), testSquareOriginCenter.getCenter());
+	}
+	
+	
+	
+	@Test
+	public void getRegularPolygon_hexagon_pointsWhereExpected() {
+		Shape hexagon = Shape.getRegularPolygon(6, 5, new Point2D.Double(10, 10));
+		int[] expectedXCoords = {15, 13, 8, 5, 7, 12};
+		int[] expectedYCoords = {10, 14, 14, 10, 6, 6};
+		checkExpectedPointCoordinatesAgainstActual(expectedXCoords, hexagon.getXCoordinatesForShapeDraw());
+		checkExpectedPointCoordinatesAgainstActual(expectedYCoords, hexagon.getYCoordinatesForShapeDraw());
 	}
 	
 	
@@ -61,24 +62,36 @@ public class ShapeTest {
 	@Test
 	public void rotateAroundCenter_squareRotated90Degrees_newSquareCenterSamePointsRotated() {
 		Shape newSquare = testSquareOriginCenter.rotateAroundCenter(90);
-		assert(Math.abs(newSquare.getCenter().x) < 0.001);  
-		assert(Math.abs(newSquare.getCenter().y) < 0.001);  
+		checkCenterPositionCorrect(new Point2D.Double(0, 0), newSquare.getCenter());
 		
 		int[] expectedXCoords = {1, 1, -1, -1};
-		int[] actualXCoords = newSquare.getXCoordinatesForShapeDraw();
-		for(int i = 0; i<expectedXCoords.length; i++) {
-			assert(Math.abs(expectedXCoords[i]-actualXCoords[i]) < 0.001);
-		}
-		
-		int[] expectedYCoords = {-1, 1, 1, -1};
-		int[] actualYCoords = newSquare.getYCoordinatesForShapeDraw();
-		for(int i = 0; i<expectedYCoords.length; i++) {
-			assert(Math.abs(expectedYCoords[i]-actualYCoords[i]) < 0.001);
-		}
+		checkExpectedPointCoordinatesAgainstActual(expectedXCoords, newSquare.getXCoordinatesForShapeDraw());
+		int[] expectedYCoords = {-1, 1, 1, -1};		
+		checkExpectedPointCoordinatesAgainstActual(expectedYCoords, newSquare.getYCoordinatesForShapeDraw());
 		
 		newSquare = testSquareAltCenter.rotateAroundCenter(90);
-		assert(Math.abs(1-newSquare.getCenter().x) < 0.001);  
-		assert(Math.abs(1-newSquare.getCenter().y) < 0.001);  
-		
+		checkCenterPositionCorrect(new Point2D.Double(1, 1), newSquare.getCenter());
+	}
+	
+	@Test
+	public void moveCenterTo_centerMoved_pointsUpdatedRelativeToNewCenter() {
+		Shape newSquare = testSquareOriginCenter.moveCenterTo(new Point2D.Double(12, 12));
+		int[] expectedXCoords = {11, 13, 13, 11};
+		checkExpectedPointCoordinatesAgainstActual(expectedXCoords, newSquare.getXCoordinatesForShapeDraw());
+		int[] expectedYCoords = {11, 11, 13, 13};
+		checkExpectedPointCoordinatesAgainstActual(expectedYCoords, newSquare.getYCoordinatesForShapeDraw());
+	}
+	
+	
+	public void checkExpectedPointCoordinatesAgainstActual(int[] expectedCoords, int[] actualCoords) {
+		assert(expectedCoords.length == actualCoords.length);
+		for(int i = 0; i<expectedCoords.length; i++) {
+			assert(Math.abs(expectedCoords[i]-actualCoords[i]) < acceptableFloatingPointErrorMargin);
+		}
+	}
+	
+	public void checkCenterPositionCorrect(Point2D.Double expectedCenter, Point2D.Double actualCenter) {
+		assert(Math.abs(expectedCenter.x-actualCenter.x) < acceptableFloatingPointErrorMargin);  
+		assert(Math.abs(expectedCenter.y-actualCenter.y) < acceptableFloatingPointErrorMargin);  
 	}
 }

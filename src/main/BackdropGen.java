@@ -7,14 +7,15 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+
+import main.display.PreviewCanvas;
 
 public class BackdropGen {
 	private static void createAndShowGUI() {
 		//Create and set up the window.
         JFrame frame = new JFrame("Backdrop Generator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new JPanel(), BorderLayout.CENTER);
+        frame.getContentPane().add(new PreviewCanvas(), BorderLayout.CENTER);
     	
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
