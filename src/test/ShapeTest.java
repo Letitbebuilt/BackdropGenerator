@@ -51,12 +51,22 @@ public class ShapeTest {
 	@Test
 	public void getRegularPolygon_hexagon_pointsWhereExpected() {
 		Shape hexagon = Shape.getRegularPolygon(6, 5, new Point2D.Double(10, 10));
-		int[] expectedXCoords = {15, 13, 8, 5, 7, 12};
+		int[] expectedXCoords = {15, 13, 8, 5, 7, 12}; //remember, drawing points are rounded
 		int[] expectedYCoords = {10, 14, 14, 10, 6, 6};
 		checkExpectedPointCoordinatesAgainstActual(expectedXCoords, hexagon.getXCoordinatesForShapeDraw());
 		checkExpectedPointCoordinatesAgainstActual(expectedYCoords, hexagon.getYCoordinatesForShapeDraw());
 	}
 	
+	@Test
+	public void getStellatedPolygon_hexagon_pointsWhereExpected() {
+		Shape star = Shape.getStellatedPolygon(5, 10, 5, new Point2D.Double(10, 10));
+		int[] expectedXCoords = {20, 14, 13, 8, 2, 5, 2, 8, 13, 14}; 
+		int[] expectedYCoords = {10, 13, 20, 15, 16, 10, 4, 5, 0, 7}; 
+		checkExpectedPointCoordinatesAgainstActual(expectedXCoords, star.getXCoordinatesForShapeDraw());
+		checkExpectedPointCoordinatesAgainstActual(expectedYCoords, star.getYCoordinatesForShapeDraw());
+		
+		
+	}
 	
 	
 	@Test
@@ -81,6 +91,31 @@ public class ShapeTest {
 		int[] expectedYCoords = {11, 11, 13, 13};
 		checkExpectedPointCoordinatesAgainstActual(expectedYCoords, newSquare.getYCoordinatesForShapeDraw());
 	}
+	
+	
+	@Test
+	public void scale_scaledDownByHalf_pointsMovedCenterConstant() {
+		Shape testSquare = Shape.getRegularPolygon(4, 2, new Point2D.Double(2,2));
+		Shape newSquare = testSquare.scale(0.5);
+		int[] expectedXCoords = {3, 2, 1, 2}; 
+		checkExpectedPointCoordinatesAgainstActual(expectedXCoords, newSquare.getXCoordinatesForShapeDraw());
+		int[] expectedYCoords = {2, 3, 2, 1};
+		checkExpectedPointCoordinatesAgainstActual(expectedYCoords, newSquare.getYCoordinatesForShapeDraw());
+		checkCenterPositionCorrect(new Point2D.Double(2, 2), newSquare.getCenter());
+	}
+	
+	@Test
+	public void scale_scaledDownByNegative_PointConfigurationInverted() {
+		Shape testSquare = Shape.getRegularPolygon(4, 2, new Point2D.Double(2,2));
+		Shape newSquare = testSquare.scale(-1);
+		int[] expectedXCoords = {0, 2, 4, 2}; 
+		checkExpectedPointCoordinatesAgainstActual(expectedXCoords, newSquare.getXCoordinatesForShapeDraw());
+		int[] expectedYCoords = {2, 0, 2, 4};
+		checkExpectedPointCoordinatesAgainstActual(expectedYCoords, newSquare.getYCoordinatesForShapeDraw());
+		checkCenterPositionCorrect(new Point2D.Double(2, 2), newSquare.getCenter());
+
+	}
+	
 	
 	
 	public void checkExpectedPointCoordinatesAgainstActual(int[] expectedCoords, int[] actualCoords) {
