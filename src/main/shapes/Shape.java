@@ -1,11 +1,13 @@
 package main.shapes;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Shape {
 	private ArrayList<Point2D.Double> points = new ArrayList<>();
 	private Point2D.Double center;
+	public Color color;
 	
 	public static Shape getRegularPolygon(int sides, int radius, Point2D.Double center) {
 		double radiansPerSide = Math.PI*2 / (double) sides;
@@ -122,4 +124,5 @@ public class Shape {
 	public Point2D.Double getCenter() {
 		return new Point2D.Double(center.x, center.y);
 	}
+	
 }
