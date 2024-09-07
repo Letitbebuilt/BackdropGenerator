@@ -17,18 +17,21 @@ public class ShapeDrawSpecifications {
 	private ArrayList<Shape> baseShapes = new ArrayList<>();
 	private double maxScaler = 3;
 	private double minScaler = .33;
-	private int baseSize = 40; 
+	public int baseSize = 15; 
 	public Dimension imageScale = new Dimension(600, 600);
-	private Point2D.Double centerPoint = new Point2D.Double(imageScale.width/6, imageScale.height/6);
+	public Point2D.Double centerMod = new Point2D.Double(1d/6d, 1d/6d);
+	public Point2D.Double centerPoint = new Point2D.Double(imageScale.width*centerMod.x, imageScale.height*centerMod.y);
 	private int numGroups = (int)imageScale.getWidth()/baseSize;
 	private int numPerGroup = 5;
-	private int baseTransparency = 30;
+	private int baseTransparency = 9;
 	private int fadeIntervals = baseTransparency;
 	private int fadeRate = baseTransparency/fadeIntervals;
 	private int colorVariability = 30;
+	private BufferedImage generatedImage = null;
+	
 	
 	public ShapeDrawSpecifications() {
-		shapeColors.addAll(List.of(Color.WHITE, Color.PINK, Color.RED, new Color(200, 40, 40)));
+		shapeColors.addAll(List.of(Color.WHITE, Color.ORANGE, Color.RED, Color.LIGHT_GRAY));
 		baseShapes.addAll(List.of(
 				Shape.getRegularPolygon(3, baseSize, centerPoint),
 				Shape.getRegularPolygon(4, baseSize, centerPoint),
@@ -37,6 +40,9 @@ public class ShapeDrawSpecifications {
 			));
 	}
 	
+	public void recalculateFocus() {
+		centerPoint = new Point2D.Double(imageScale.width*centerMod.x, imageScale.height*centerMod.y);
+	}
 	public void clearBaseShapes() {
 		baseShapes = new ArrayList<>();
 	}
@@ -57,24 +63,30 @@ public class ShapeDrawSpecifications {
 		shapeColors.add(c);
 	}
 	
-	
+	public void clearImage() {
+		generatedImage = null;
+	}
 	
 	public BufferedImage getImageForDesktop() {
-		BufferedImage image = new BufferedImage((int)imageScale.getWidth(), (int)imageScale.getHeight(), BufferedImage.TYPE_INT_RGB);
+		if(generatedImage != null) { 
+			return generatedImage;
+		}
+		
+		generatedImage = new BufferedImage((int)imageScale.getWidth(), (int)imageScale.getHeight(), BufferedImage.TYPE_INT_RGB);
 		ArrayList<Shape> shapes = generateShapesMatchingSpecs();
-		Graphics2D g2 = (Graphics2D) image.getGraphics();
+		Graphics2D g2 = (Graphics2D) generatedImage.getGraphics();
         g2.setColor(baseColor);
-        g2.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g2.fillRect(0, 0, generatedImage.getWidth(), generatedImage.getHeight());
         g2.setStroke(new BasicStroke(2));
         for(Shape shape: shapes) {
         	g2.setColor(shape.color);
         	g2.fillPolygon(shape.getXCoordinatesForShapeDraw(), shape.getYCoordinatesForShapeDraw(), shape.getXCoordinatesForShapeDraw().length);
         }
         g2.dispose();
-        return image;
+        return generatedImage;
 	}
 	
-	public ArrayList<Shape> generateShapesMatchingSpecs(){
+	private ArrayList<Shape> generateShapesMatchingSpecs(){
 		if(baseShapes.isEmpty() || shapeColors.isEmpty()) {
 			return new ArrayList<>();
 		}
@@ -89,9 +101,9 @@ public class ShapeDrawSpecifications {
 	      		Color translucentColor = new Color(getColorWithRandomMod(baseColor.getRed()), getColorWithRandomMod(baseColor.getGreen()), getColorWithRandomMod(baseColor.getBlue()), 30);
 	      		drawTarget.color = translucentColor;
 	      		shapes.add(drawTarget);
-	      		for(int glow = 0; glow < 9; glow++) {
-	      			drawTarget = drawTarget.scale(1.05);
-	          		translucentColor = new Color(translucentColor.getRed(), translucentColor.getGreen(), translucentColor.getBlue(), translucentColor.getAlpha()-3);
+	      		for(int glow = 0; glow < fadeIntervals; glow++) {
+	      			drawTarget = drawTarget.scale(1.02);
+	          		translucentColor = new Color(translucentColor.getRed(), translucentColor.getGreen(), translucentColor.getBlue(), translucentColor.getAlpha()-fadeRate);
 	          		drawTarget.color = translucentColor;
 	          		shapes.add(drawTarget);
 	      		}

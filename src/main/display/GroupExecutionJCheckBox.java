@@ -12,7 +12,7 @@ public abstract class GroupExecutionJCheckBox extends JCheckBox{
 	private static final long serialVersionUID = 8566661393155553928L;
 	static ArrayList<GroupExecutionJCheckBox> allInstances = new ArrayList<>();
 	GroupExecutionJCheckBox selfRef;
-	public GroupExecutionJCheckBox() {
+	public GroupExecutionJCheckBox(boolean selected) {
 		super();
 		selfRef = this;
 		allInstances.add(this);
@@ -30,6 +30,8 @@ public abstract class GroupExecutionJCheckBox extends JCheckBox{
 			}
 			
 		});
+		
+		this.setSelected(selected);
 	}
 
 	public abstract void performBeforeGroupUpdate();
