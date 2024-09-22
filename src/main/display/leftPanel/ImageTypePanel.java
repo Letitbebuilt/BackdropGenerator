@@ -29,7 +29,7 @@ public class ImageTypePanel extends JPanel{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		JPanel imageScaleLabelContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		imageScaleLabelContainer.setMaximumSize(new Dimension(10000, 50));
-		JLabel imageScaleLabel = new JLabel("Select desired focus Point:");		
+		JLabel imageScaleLabel = new JLabel("Select desired image dimensions:");		
 		imageScaleLabelContainer.add(imageScaleLabel);
 		this.add(imageScaleLabelContainer);
 

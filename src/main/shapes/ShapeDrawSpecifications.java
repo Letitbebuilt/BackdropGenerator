@@ -26,7 +26,7 @@ public class ShapeDrawSpecifications {
 	private int baseTransparency = 9;
 	private int fadeIntervals = baseTransparency;
 	private int fadeRate = baseTransparency/fadeIntervals;
-	private int colorVariability = 30;
+	private int colorVariability = 15;
 	private BufferedImage generatedImage = null;
 	
 	
@@ -55,12 +55,16 @@ public class ShapeDrawSpecifications {
 		baseShapes.add(Shape.getRegularPolygon(sides, baseSize, centerPoint));
 	}
 	
-	public void clearBaseColors() {
+	public void clearShapeColors() {
 		shapeColors = new ArrayList<>();
 	}
 	
-	public void addColor(Color c) {
+	public void addShapeColor(Color c) {
 		shapeColors.add(c);
+	}
+	
+	public void setBackgroundColor(Color c) {
+		baseColor = (c == null? Color.black:c);
 	}
 	
 	public void clearImage() {

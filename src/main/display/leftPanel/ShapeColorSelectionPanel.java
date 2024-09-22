@@ -13,12 +13,12 @@ import main.display.GroupExecutionJCheckBox;
 import main.display.PreviewCanvas;
 import main.shapes.ShapeDrawSpecifications;
 
-public class ColorSelectionPanel extends JPanel{
+public class ShapeColorSelectionPanel extends JPanel{
 
 	private static final long serialVersionUID = -9092168706431390569L;
 	ShapeDrawSpecifications specs;
 	PreviewCanvas preview;
-	public ColorSelectionPanel(ShapeDrawSpecifications specs, PreviewCanvas preview) {
+	public ShapeColorSelectionPanel(ShapeDrawSpecifications specs, PreviewCanvas preview) {
 		super();
 		this.specs = specs;
 		this.preview = preview;
@@ -54,12 +54,12 @@ public class ColorSelectionPanel extends JPanel{
 
 			@Override
 			public void performBeforeGroupUpdate() {
-				specs.clearBaseColors();
+				specs.clearShapeColors();
 			}
 
 			@Override
 			public void performUpdate() {
-				specs.addColor(color);
+				specs.addShapeColor(color);
 			}
 
 			@Override
