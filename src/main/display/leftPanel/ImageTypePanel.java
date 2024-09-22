@@ -61,7 +61,7 @@ public class ImageTypePanel extends JPanel{
 				specs.baseSize = dimension.height/40;
 				specs.recalculateFocus();
 				specs.clearImage();
-				preview.setShapesToDraw(specs.getImageForDesktop());
+				preview.setShapesToDraw(specs.getImage());
 				preview.baseColor = specs.baseColor;
 				preview.repaint();
 			}

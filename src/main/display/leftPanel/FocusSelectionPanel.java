@@ -59,7 +59,7 @@ public class FocusSelectionPanel extends JPanel{
 				specs.centerMod = new Point2D.Double(widthMod, heightMod);
 				specs.recalculateFocus();
 				specs.clearImage();
-				preview.setShapesToDraw(specs.getImageForDesktop());
+				preview.setShapesToDraw(specs.getImage());
 				preview.baseColor = specs.baseColor;
 				preview.repaint();
 			}
