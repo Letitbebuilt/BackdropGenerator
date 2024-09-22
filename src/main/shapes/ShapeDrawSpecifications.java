@@ -31,7 +31,7 @@ public class ShapeDrawSpecifications {
 	
 	
 	public ShapeDrawSpecifications() {
-		shapeColors.addAll(List.of(Color.WHITE, Color.ORANGE, Color.RED, Color.LIGHT_GRAY));
+		shapeColors.addAll(List.of(Color.LIGHT_GRAY));
 		baseShapes.addAll(List.of(
 				Shape.getRegularPolygon(3, baseSize, centerPoint),
 				Shape.getRegularPolygon(4, baseSize, centerPoint),
@@ -71,7 +71,7 @@ public class ShapeDrawSpecifications {
 		generatedImage = null;
 	}
 	
-	public BufferedImage getImageForDesktop() {
+	public BufferedImage getImage() {
 		if(generatedImage != null) { 
 			return generatedImage;
 		}

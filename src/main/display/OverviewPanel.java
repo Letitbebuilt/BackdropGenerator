@@ -15,11 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import main.display.leftPanel.BackgroundColorSelectionPanel;
 import main.display.leftPanel.FocusSelectionPanel;
 import main.display.leftPanel.ImageTypePanel;
-import main.display.leftPanel.ShapeColorSelectionPanel;
 import main.display.leftPanel.ShapeSelectionPanel;
+import main.display.leftPanel.colorSelectors.BackgroundColorSelectionPanel;
+import main.display.leftPanel.colorSelectors.ShapeColorSelectionPanel;
 import main.shapes.ShapeDrawSpecifications;
 
 public class OverviewPanel extends JPanel{
@@ -108,7 +108,7 @@ public class OverviewPanel extends JPanel{
 					  try {
 						file.createNewFile();
 						
-						ImageIO.write(shapeSpecs.getImageForDesktop(), "png", file);
+						ImageIO.write(shapeSpecs.getImage(), "png", file);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -124,7 +124,7 @@ public class OverviewPanel extends JPanel{
 	
 	private void refreshImage() {
 		shapeSpecs.clearImage();
-		preview.setShapesToDraw(shapeSpecs.getImageForDesktop());
+		preview.setShapesToDraw(shapeSpecs.getImage());
 		preview.baseColor = shapeSpecs.baseColor;
 		preview.repaint();
 	}

@@ -70,7 +70,7 @@ public class ShapeSelectionPanel extends JPanel{
 			@Override
 			public void performAfterGroupUpdate() {
 				specs.clearImage();
-				preview.setShapesToDraw(specs.getImageForDesktop());
+				preview.setShapesToDraw(specs.getImage());
 				preview.baseColor = specs.baseColor;
 				preview.repaint();
 			}
