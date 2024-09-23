@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -57,9 +58,10 @@ public class ImageTypePanel extends JPanel{
 		radioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Dimension oldImageScale = new Dimension((int)specs.imageScale.getWidth(), (int)specs.imageScale.getHeight());
 				specs.imageScale = dimension;
 				specs.baseSize = dimension.height/40;
-				specs.recalculateFocus();
+				specs.centerPoint = new Point2D.Double(specs.centerPoint.x * dimension.getWidth()/oldImageScale.getWidth(), specs.centerPoint.y * dimension.getHeight()/oldImageScale.getHeight());
 				specs.clearImage();
 				preview.setShapesToDraw(specs.getImage());
 				preview.baseColor = specs.baseColor;
