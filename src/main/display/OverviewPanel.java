@@ -29,7 +29,7 @@ public class OverviewPanel extends JPanel{
 	ShapeDrawSpecifications shapeSpecs = new ShapeDrawSpecifications();
 	public OverviewPanel() {
 		super();
-		preview = new PreviewCanvas();
+		preview = new PreviewCanvas(shapeSpecs);
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
 		this.add(getLeftSidePanels());
@@ -48,14 +48,14 @@ public class OverviewPanel extends JPanel{
 		
 		leftSide.add(new ShapeColorSelectionPanel(shapeSpecs, preview));
 		leftSide.add(createVerticalPadding(10));
-		
-		leftSide.add(new FocusSelectionPanel(shapeSpecs, preview));
-		leftSide.add(createVerticalPadding(10));
 
 		leftSide.add(new ImageTypePanel(shapeSpecs, preview));
 		leftSide.add(createVerticalPadding(10));
 		
 		leftSide.add(new BackgroundColorSelectionPanel(shapeSpecs, preview));
+		leftSide.add(createVerticalPadding(10));
+
+		leftSide.add(new FocusSelectionPanel(shapeSpecs, preview));
 		leftSide.add(createVerticalPadding(10));
 		
 		leftSide.add(getButtonPanel());

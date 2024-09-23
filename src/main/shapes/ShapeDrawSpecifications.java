@@ -19,8 +19,7 @@ public class ShapeDrawSpecifications {
 	private double minScaler = .33;
 	public int baseSize = 15; 
 	public Dimension imageScale = new Dimension(600, 600);
-	public Point2D.Double centerMod = new Point2D.Double(1d/6d, 1d/6d);
-	public Point2D.Double centerPoint = new Point2D.Double(imageScale.width*centerMod.x, imageScale.height*centerMod.y);
+	public Point2D.Double centerPoint = new Point2D.Double(imageScale.width/2, imageScale.height/2);
 	private int numGroups = (int)imageScale.getWidth()/baseSize;
 	private int numPerGroup = 5;
 	private int baseTransparency = 9;
@@ -38,10 +37,6 @@ public class ShapeDrawSpecifications {
 				Shape.getRegularPolygon(5, baseSize, centerPoint),
 				Shape.getRegularPolygon(6, baseSize, centerPoint)
 			));
-	}
-	
-	public void recalculateFocus() {
-		centerPoint = new Point2D.Double(imageScale.width*centerMod.x, imageScale.height*centerMod.y);
 	}
 	public void clearBaseShapes() {
 		baseShapes = new ArrayList<>();
