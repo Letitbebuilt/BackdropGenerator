@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Shape {
 	private ArrayList<Point2D.Double> points = new ArrayList<>();
 	private Point2D.Double center;
-	public Color color;
+	public Color color = Color.BLACK;
 	
 	public static Shape getRegularPolygon(int sides, int radius, Point2D.Double center) {
 		double radiansPerSide = Math.PI*2 / (double) sides;
