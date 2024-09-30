@@ -26,7 +26,7 @@ public class Circle extends Shape {
 
 	@Override
 	public Shape scale(double scaleModifier) {
-		return new Circle(new Point2D.Double(center.x, center.y), (int)(radius*scaleModifier));
+		return new Circle(new Point2D.Double(center.x, center.y), radius*scaleModifier);
 	}
 
 	@Override
