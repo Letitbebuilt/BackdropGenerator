@@ -32,10 +32,10 @@ public class ShapeDrawSpecifications {
 	public ShapeDrawSpecifications() {
 		shapeColors.addAll(List.of(Color.LIGHT_GRAY));
 		baseShapes.addAll(List.of(
-				Shape.getRegularPolygon(3, baseSize, centerPoint),
-				Shape.getRegularPolygon(4, baseSize, centerPoint),
-				Shape.getRegularPolygon(5, baseSize, centerPoint),
-				Shape.getRegularPolygon(6, baseSize, centerPoint)
+				Polygon.getRegularPolygon(3, baseSize, centerPoint),
+				Polygon.getRegularPolygon(4, baseSize, centerPoint),
+				Polygon.getRegularPolygon(5, baseSize, centerPoint),
+				Polygon.getRegularPolygon(6, baseSize, centerPoint)
 			));
 	}
 	public void clearBaseShapes() {
@@ -43,11 +43,15 @@ public class ShapeDrawSpecifications {
 	}
 	
 	public void addStellatedPolygon(int stellations) {
-		baseShapes.add(Shape.getStellatedPolygon(stellations, baseSize, (stellations < 5?   baseSize/3: baseSize/2), centerPoint));
+		baseShapes.add(Polygon.getStellatedPolygon(stellations, baseSize, (stellations < 5?   baseSize/3: baseSize/2), centerPoint));
 	}
 	
 	public void addRegularPolygon(int sides) {
-		baseShapes.add(Shape.getRegularPolygon(sides, baseSize, centerPoint));
+		baseShapes.add(Polygon.getRegularPolygon(sides, baseSize, centerPoint));
+	}
+	
+	public void addCircle() {
+		baseShapes.add(Circle.getCircle(centerPoint, baseSize));
 	}
 	
 	public void clearShapeColors() {
@@ -78,8 +82,19 @@ public class ShapeDrawSpecifications {
         g2.fillRect(0, 0, generatedImage.getWidth(), generatedImage.getHeight());
         g2.setStroke(new BasicStroke(2));
         for(Shape shape: shapes) {
-        	g2.setColor(shape.color);
-        	g2.fillPolygon(shape.getXCoordinatesForShapeDraw(), shape.getYCoordinatesForShapeDraw(), shape.getXCoordinatesForShapeDraw().length);
+            g2.setColor(shape.color);
+        	if(shape instanceof Polygon) {
+        		Polygon polygon = (Polygon) shape;
+            	g2.fillPolygon(polygon.getXCoordinatesForShapeDraw(), polygon.getYCoordinatesForShapeDraw(), polygon.getXCoordinatesForShapeDraw().length);
+        	}
+        	else if(shape instanceof Circle) {
+        		Circle circle = (Circle) shape;
+        		g2.fillOval((int)(circle.center.x - circle.radius), 
+        				    (int)(circle.center.y - circle.radius),
+        				    (int)(circle.radius*2), 
+        				    (int)(circle.radius*2));
+        	}
+        	
         }
         g2.dispose();
         return generatedImage;

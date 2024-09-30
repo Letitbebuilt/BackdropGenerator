@@ -60,7 +60,7 @@ public class OverviewPanel extends JPanel{
 		
 		leftSide.add(getButtonPanel());
 		
-		leftSide.add(createVerticalPadding(10));
+		leftSide.add(createVerticalPadding(50));
 
 		JPanel legal = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel legalVert = new JPanel();

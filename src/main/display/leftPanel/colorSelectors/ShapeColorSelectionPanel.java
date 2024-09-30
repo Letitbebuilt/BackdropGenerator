@@ -35,7 +35,7 @@ public class ShapeColorSelectionPanel extends JPanel{
 		
 		
 		JPanel colorSelectLabelContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		colorSelectLabelContainer.setPreferredSize(new Dimension(buttonSize*maxCols+maxCols*4+colorBox.width, 50));
+		colorSelectLabelContainer.setPreferredSize(new Dimension(buttonSize*maxCols+maxCols*4+colorBox.width, 30));
 		JLabel colorSelectLabel = new JLabel("Select desired colors below:");		
 		colorSelectLabelContainer.add(colorSelectLabel);
 		this.add(colorSelectLabelContainer);
