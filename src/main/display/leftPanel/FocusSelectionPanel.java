@@ -14,14 +14,14 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import main.display.PreviewCanvas;
-import main.shapes.ShapeDrawSpecifications;
+import main.shapes.LayerDrawSpecifications;
 
 public class FocusSelectionPanel extends JPanel{
 
 	private static final long serialVersionUID = -9092168706431390569L;
-	ShapeDrawSpecifications specs;
+	LayerDrawSpecifications specs;
 	PreviewCanvas preview;
-	public FocusSelectionPanel(ShapeDrawSpecifications specs, PreviewCanvas preview) {
+	public FocusSelectionPanel(LayerDrawSpecifications specs, PreviewCanvas preview) {
 		super();
 		this.specs = specs;
 		this.preview = preview;

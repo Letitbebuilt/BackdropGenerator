@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import javax.swing.JPanel;
 
 import main.display.PreviewCanvas;
-import main.shapes.ShapeDrawSpecifications;
+import main.shapes.LayerDrawSpecifications;
 
 public class ColorSelectionBox extends JPanel{ 
 	private static final long serialVersionUID = 4500249599732469493L;

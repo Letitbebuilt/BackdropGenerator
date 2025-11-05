@@ -18,16 +18,16 @@ import javax.swing.JPanel;
 import main.display.GroupExecutionJCheckBox;
 import main.display.PreviewCanvas;
 import main.shapes.Circle;
+import main.shapes.LayerDrawSpecifications;
 import main.shapes.Polygon;
 import main.shapes.Shape;
-import main.shapes.ShapeDrawSpecifications;
 
 public class ShapeSelectionPanel extends JPanel{
 
 	private static final long serialVersionUID = -9092168706431390569L;
-	ShapeDrawSpecifications specs;
+	LayerDrawSpecifications specs;
 	PreviewCanvas preview;
-	public ShapeSelectionPanel(ShapeDrawSpecifications specs, PreviewCanvas preview) {
+	public ShapeSelectionPanel(LayerDrawSpecifications specs, PreviewCanvas preview) {
 		super();
 		this.specs = specs;
 		this.preview = preview;
@@ -80,9 +80,6 @@ public class ShapeSelectionPanel extends JPanel{
 
 			@Override
 			public void performAfterGroupUpdate() {
-				specs.clearImage();
-				preview.setShapesToDraw(specs.getImage());
-				preview.baseColor = specs.baseColor;
 				preview.repaint();
 				icon.setImage(getIconForCheckbox(imageSize, shapeRotated, this.isSelected()));
 			}
@@ -134,9 +131,6 @@ public class ShapeSelectionPanel extends JPanel{
 
 			@Override
 			public void performAfterGroupUpdate() {
-				specs.clearImage();
-				preview.setShapesToDraw(specs.getImage());
-				preview.baseColor = specs.baseColor;
 				preview.repaint();
 				icon.setImage(getIconForCheckbox(imageSize, shapeRotated, this.isSelected()));
 			}
@@ -187,9 +181,6 @@ public class ShapeSelectionPanel extends JPanel{
 
 			@Override
 			public void performAfterGroupUpdate() {
-				specs.clearImage();
-				preview.setShapesToDraw(specs.getImage());
-				preview.baseColor = specs.baseColor;
 				preview.repaint();
 				icon.setImage(getIconForCheckbox(imageSize, circle, this.isSelected()));
 			}

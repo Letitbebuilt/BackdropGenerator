@@ -8,13 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.display.PreviewCanvas;
-import main.shapes.ShapeDrawSpecifications;
+import main.shapes.GeneralDrawSpecifications;
 
 public class BackgroundColorSelectionPanel extends JPanel{
 	private static final long serialVersionUID = -3993717702437763584L;
-	ShapeDrawSpecifications specs;
+	GeneralDrawSpecifications specs;
 	PreviewCanvas preview;
-	public BackgroundColorSelectionPanel(ShapeDrawSpecifications specs, PreviewCanvas preview) {
+	public BackgroundColorSelectionPanel(GeneralDrawSpecifications specs, PreviewCanvas preview) {
 		super();
 		this.specs = specs;
 		this.preview = preview;
@@ -30,7 +30,6 @@ public class BackgroundColorSelectionPanel extends JPanel{
 		ColorSelectionBox colorSelectPanel = new ColorSelectionBox(e -> {
 			specs.setBackgroundColor(e);
 			specs.clearImage();
-			preview.setShapesToDraw(specs.getImage());
 			preview.baseColor = specs.baseColor;
 			preview.repaint();
 		});
