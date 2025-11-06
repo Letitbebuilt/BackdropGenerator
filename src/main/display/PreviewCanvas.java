@@ -41,18 +41,22 @@ public class PreviewCanvas extends JPanel{
 		System.out.println(this.getMouseListeners().length);
 		this.addMouseListener(new MouseListener() {
 			
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e) {}
+			public void mousePressed(MouseEvent e) {}
+			public void mouseReleased(MouseEvent e) {
+				double width = generalSpecs.imageScale.getWidth();
+				double height = generalSpecs.imageScale.getHeight();
+				double ratio = generalSpecs.imageScale.getWidth() / dimensions.getWidth();
 				
-				double xModRatio = generalSpecs.imageScale.getWidth() / dimensions.getWidth();
-				double yModRatio = generalSpecs.imageScale.getHeight() / dimensions.getHeight();
-				if(e.getPoint().x*xModRatio < generalSpecs.imageScale.getWidth() && e.getPoint().y*yModRatio < generalSpecs.imageScale.getHeight()) {
-					selectedSpec.centerPoint = new Point2D.Double(e.getPoint().x*xModRatio, e.getPoint().y*yModRatio);
+				double xMod = width > height ? 1: width / height;
+				double yMod = height > width ? 1: height / width;
+				
+				if(e.getPoint().x/xMod < dimensions.getWidth() && e.getPoint().y/yMod < dimensions.getHeight()) {
+					selectedSpec.centerPoint = new Point2D.Double(e.getPoint().x*ratio, e.getPoint().y*ratio);
 					baseColor = generalSpecs.baseColor;
 					repaint();
 				}
 			}
-			public void mousePressed(MouseEvent e) {}
-			public void mouseReleased(MouseEvent e) {}
 			public void mouseEntered(MouseEvent e) {}
 			public void mouseExited(MouseEvent e) {}
 			

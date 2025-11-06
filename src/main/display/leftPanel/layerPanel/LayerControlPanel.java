@@ -15,10 +15,13 @@ public class LayerControlPanel extends JPanel{
 
 	private static final long serialVersionUID = -7464722965760324654L;
 	LayerDrawSpecifications shapeSpecs = new LayerDrawSpecifications();
+	FocusSelectionPanel focusPanel;
+	
 	public LayerControlPanel(PreviewCanvas preview) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.add(new FocusSelectionPanel(shapeSpecs, preview));
+		focusPanel = new FocusSelectionPanel(shapeSpecs, preview);
+		this.add(focusPanel);
 		this.add(createVerticalPadding(10));
 		
 		this.add(new ShapeSelectionPanel(shapeSpecs, preview));
@@ -36,5 +39,9 @@ public class LayerControlPanel extends JPanel{
 	
 	public LayerDrawSpecifications getSpecs() {
 		return shapeSpecs;
+	}
+	
+	public void setCurrentLabelName(String label) {
+		focusPanel.setCurrentLayer(label);
 	}
 }

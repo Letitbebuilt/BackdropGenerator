@@ -84,6 +84,8 @@ public class OverviewPanel extends JPanel{
 		for(int i = 0; i<layer; i++) {
 			layerPanelCards.next(layerPanel);
 		}
+		
+		selectedLayerControlPanel.setCurrentLabelName("Layer "+(layer+1));
 	}
 	
 	public int getNumberOfLayers() {
@@ -96,6 +98,7 @@ public class OverviewPanel extends JPanel{
 		shapeSpecs.add(panel.getSpecs());
 		layerPanel.add(panel);
 		setSelectedSpec(layerControlPanels.size()-1);
+		preview.repaint();
 	}
 	
 	public void removeLayer(int layer) {
