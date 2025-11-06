@@ -1,11 +1,13 @@
 package main.display;
 
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -15,21 +17,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import main.display.leftPanel.FocusSelectionPanel;
 import main.display.leftPanel.ImageTypePanel;
-import main.display.leftPanel.ShapeSelectionPanel;
 import main.display.leftPanel.colorSelectors.BackgroundColorSelectionPanel;
-import main.display.leftPanel.colorSelectors.ShapeColorSelectionPanel;
-import main.shapes.ShapeDrawSpecifications;
+import main.display.leftPanel.layerPanel.LayerControlPanel;
+import main.shapes.GeneralDrawSpecifications;
+import main.shapes.LayerDrawSpecifications;
 
 public class OverviewPanel extends JPanel{
 	private static final long serialVersionUID = -1079777852585779396L;
 	private PreviewCanvas preview;
 	OverviewPanel selfRef;
-	ShapeDrawSpecifications shapeSpecs = new ShapeDrawSpecifications();
+
+	ArrayList<LayerControlPanel> layerControlPanels = new ArrayList<>();
+	CardLayout layerPanelCards = new CardLayout();
+	JPanel layerPanel;
+	LayerControlPanel selectedLayerControlPanel;
+	ArrayList<LayerDrawSpecifications> shapeSpecs = new ArrayList<>();
+	LayerDrawSpecifications selectedSpecs = new LayerDrawSpecifications();
+	GeneralDrawSpecifications generalSpecs = new GeneralDrawSpecifications();
 	public OverviewPanel() {
 		super();
-		preview = new PreviewCanvas(shapeSpecs);
+		preview = new PreviewCanvas(shapeSpecs, generalSpecs);
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
 		this.add(getLeftSidePanels());
@@ -38,25 +46,21 @@ public class OverviewPanel extends JPanel{
 	}
 
 	private JPanel getLeftSidePanels() {
-		int leftSideWidth = 450;
 		JPanel leftSide = new JPanel();
 		leftSide.setMaximumSize(new Dimension(450, 10000));
 		leftSide.setLayout(new BoxLayout(leftSide, BoxLayout.Y_AXIS));
 		
-		leftSide.add(new ShapeSelectionPanel(shapeSpecs, preview));
-		leftSide.add(createVerticalPadding(10));	
+		layerPanel = new JPanel(layerPanelCards);
+		addLayer();
+		setSelectedSpec(0);
+		leftSide.add(layerPanel);
 		
-		leftSide.add(new ShapeColorSelectionPanel(shapeSpecs, preview));
+		leftSide.add(new ImageTypePanel(shapeSpecs, generalSpecs, preview));
+		leftSide.add(createVerticalPadding(10));
+		
+		leftSide.add(new BackgroundColorSelectionPanel(generalSpecs, preview));
 		leftSide.add(createVerticalPadding(10));
 
-		leftSide.add(new ImageTypePanel(shapeSpecs, preview));
-		leftSide.add(createVerticalPadding(10));
-		
-		leftSide.add(new BackgroundColorSelectionPanel(shapeSpecs, preview));
-		leftSide.add(createVerticalPadding(10));
-
-		leftSide.add(new FocusSelectionPanel(shapeSpecs, preview));
-		leftSide.add(createVerticalPadding(10));
 		
 		leftSide.add(getButtonPanel());
 		
@@ -73,7 +77,38 @@ public class OverviewPanel extends JPanel{
 		return leftSide;
 	}
 	
+	public void setSelectedSpec(int layer) {
+		selectedLayerControlPanel = layerControlPanels.get(layer);
+		preview.setSelectedSpec(layerControlPanels.get(layer).getSpecs());
+		layerPanelCards.first(layerPanel);
+		for(int i = 0; i<layer; i++) {
+			layerPanelCards.next(layerPanel);
+		}
+		
+		selectedLayerControlPanel.setCurrentLabelName("Layer "+(layer+1));
+	}
 	
+	public int getNumberOfLayers() {
+		return shapeSpecs.size();
+	}
+	
+	public void addLayer() {
+		LayerControlPanel panel = new LayerControlPanel(preview);
+		layerControlPanels.add(panel);
+		shapeSpecs.add(panel.getSpecs());
+		layerPanel.add(panel);
+		setSelectedSpec(layerControlPanels.size()-1);
+		preview.repaint();
+	}
+	
+	public void removeLayer(int layer) {
+		if(shapeSpecs.size() > 1) {
+			LayerControlPanel removalTarget = layerControlPanels.remove(layer);
+			layerPanel.remove(removalTarget);
+			shapeSpecs.remove(layer);
+			setSelectedSpec(0);
+		}
+	}
 	
 	private JPanel getRightSidePanels() {
 		JPanel rightSide = new JPanel();
@@ -108,7 +143,7 @@ public class OverviewPanel extends JPanel{
 					  try {
 						file.createNewFile();
 						
-						ImageIO.write(shapeSpecs.getImage(), "png", file);
+						ImageIO.write(preview.getImage(), "png", file);
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -123,9 +158,6 @@ public class OverviewPanel extends JPanel{
 	}
 	
 	private void refreshImage() {
-		shapeSpecs.clearImage();
-		preview.setShapesToDraw(shapeSpecs.getImage());
-		preview.baseColor = shapeSpecs.baseColor;
 		preview.repaint();
 	}
 	

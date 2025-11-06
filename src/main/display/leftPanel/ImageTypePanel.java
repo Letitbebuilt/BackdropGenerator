@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -15,16 +16,19 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import main.display.PreviewCanvas;
-import main.shapes.ShapeDrawSpecifications;
+import main.shapes.GeneralDrawSpecifications;
+import main.shapes.LayerDrawSpecifications;
 
 public class ImageTypePanel extends JPanel{
 
 	private static final long serialVersionUID = -9092168706431390569L;
-	ShapeDrawSpecifications specs;
+	ArrayList<LayerDrawSpecifications> specs;
+	GeneralDrawSpecifications generalSpecs;
 	PreviewCanvas preview;
-	public ImageTypePanel(ShapeDrawSpecifications specs, PreviewCanvas preview) {
+	public ImageTypePanel(ArrayList<LayerDrawSpecifications> specs, GeneralDrawSpecifications generalSpecs, PreviewCanvas preview) {
 		super();
 		this.specs = specs;
+		this.generalSpecs = generalSpecs;
 		this.preview = preview;
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -58,13 +62,13 @@ public class ImageTypePanel extends JPanel{
 		radioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Dimension oldImageScale = new Dimension((int)specs.imageScale.getWidth(), (int)specs.imageScale.getHeight());
-				specs.imageScale = dimension;
-				specs.baseSize = dimension.height/40;
-				specs.centerPoint = new Point2D.Double(specs.centerPoint.x * dimension.getWidth()/oldImageScale.getWidth(), specs.centerPoint.y * dimension.getHeight()/oldImageScale.getHeight());
-				specs.clearImage();
-				preview.setShapesToDraw(specs.getImage());
-				preview.baseColor = specs.baseColor;
+				for(LayerDrawSpecifications spec: specs) {
+					Dimension oldImageScale = new Dimension((int)spec.imageScale.getWidth(), (int)spec.imageScale.getHeight());
+					spec.imageScale = dimension;
+					spec.baseSize = dimension.height/40;
+					spec.centerPoint = new Point2D.Double(spec.centerPoint.x * dimension.getWidth()/oldImageScale.getWidth(), spec.centerPoint.y * dimension.getHeight()/oldImageScale.getHeight());
+				}
+				generalSpecs.imageScale = dimension;
 				preview.repaint();
 			}
 			

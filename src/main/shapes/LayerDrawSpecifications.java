@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ShapeDrawSpecifications {
+public class LayerDrawSpecifications {
 	private static final Random rand = new Random();
-	public Color baseColor = Color.BLACK;
 	private ArrayList<Color> shapeColors = new ArrayList<>();
 	private ArrayList<Shape> baseShapes = new ArrayList<>();
 	private double maxScaler = 3;
@@ -26,10 +25,9 @@ public class ShapeDrawSpecifications {
 	private int fadeIntervals = baseTransparency;
 	private int fadeRate = baseTransparency/fadeIntervals;
 	private int colorVariability = 15;
-	private BufferedImage generatedImage = null;
 	
 	
-	public ShapeDrawSpecifications() {
+	public LayerDrawSpecifications() {
 		shapeColors.addAll(List.of(Color.LIGHT_GRAY));
 		baseShapes.addAll(List.of(
 				Polygon.getRegularPolygon(3, baseSize, centerPoint),
@@ -62,24 +60,10 @@ public class ShapeDrawSpecifications {
 		shapeColors.add(c);
 	}
 	
-	public void setBackgroundColor(Color c) {
-		baseColor = (c == null? Color.black:c);
-	}
-	
-	public void clearImage() {
-		generatedImage = null;
-	}
-	
 	public BufferedImage getImage() {
-		if(generatedImage != null) { 
-			return generatedImage;
-		}
-		
-		generatedImage = new BufferedImage((int)imageScale.getWidth(), (int)imageScale.getHeight(), BufferedImage.TYPE_INT_RGB);
+		BufferedImage generatedImage = new BufferedImage((int)imageScale.getWidth(), (int)imageScale.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		ArrayList<Shape> shapes = generateShapesMatchingSpecs();
 		Graphics2D g2 = (Graphics2D) generatedImage.getGraphics();
-        g2.setColor(baseColor);
-        g2.fillRect(0, 0, generatedImage.getWidth(), generatedImage.getHeight());
         g2.setStroke(new BasicStroke(2));
         for(Shape shape: shapes) {
             g2.setColor(shape.color);
@@ -110,7 +94,7 @@ public class ShapeDrawSpecifications {
 	      		Shape reference = baseShapes.get(rand.nextInt(baseShapes.size()));
 	      		Shape drawTarget = reference.rotateAroundCenter(rand.nextInt(360))
 	      				.scale(rand.nextDouble(minScaler, maxScaler))
-	      				.moveCenterTo(new Point2D.Double(centerPoint.x + rand.nextInt(-groups*baseSize*3, groups*baseSize*3), centerPoint.y + rand.nextInt(-groups*baseSize*4, groups*baseSize*4)));
+	      				.moveCenterTo(new Point2D.Double(centerPoint.x + rand.nextInt(-groups*baseSize*3, groups*baseSize*3), centerPoint.y + rand.nextInt(-groups*baseSize*3, groups*baseSize*3)));
 	      		Color baseColor = shapeColors.get(rand.nextInt(shapeColors.size()));
 	      		Color translucentColor = new Color(getColorWithRandomMod(baseColor.getRed()), getColorWithRandomMod(baseColor.getGreen()), getColorWithRandomMod(baseColor.getBlue()), 30);
 	      		drawTarget.color = translucentColor;

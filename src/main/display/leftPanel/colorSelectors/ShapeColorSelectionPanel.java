@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.display.PreviewCanvas;
-import main.shapes.ShapeDrawSpecifications;
+import main.shapes.LayerDrawSpecifications;
 
 public class ShapeColorSelectionPanel extends JPanel{
 
 	private static final long serialVersionUID = -9092168706431390569L;
-	ShapeDrawSpecifications specs;
+	LayerDrawSpecifications specs;
 	PreviewCanvas preview;
 	
 	JPanel selectedColorButtonPanel;
@@ -26,7 +26,7 @@ public class ShapeColorSelectionPanel extends JPanel{
 	int buttonSize = 20;
 	int maxRows = 3;
 	int maxCols = 9;
-	public ShapeColorSelectionPanel(ShapeDrawSpecifications specs, PreviewCanvas preview) {
+	public ShapeColorSelectionPanel(LayerDrawSpecifications specs, PreviewCanvas preview) {
 		super();
 		this.specs = specs;
 		this.preview = preview;
@@ -60,9 +60,6 @@ public class ShapeColorSelectionPanel extends JPanel{
 	private void resetPreview() {
 		specs.clearShapeColors();
 		selectedColors.stream().forEach(e -> specs.addShapeColor(e));
-		specs.clearImage();
-		preview.setShapesToDraw(specs.getImage());
-		preview.baseColor = specs.baseColor;
 		preview.repaint();
 	}
 	
